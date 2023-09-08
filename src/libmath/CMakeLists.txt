@@ -12,4 +12,5 @@ target_include_directories(
   PUBLIC
     ../../include/
     ../../external/cxxopts/cxxopts/include
+    ../../external/fmtlib/fmtlib/include/fmt
 )
