@@ -1,7 +1,19 @@
+#include <cxxopts.hpp>
+#include <fts/sum.h>
 #include <iostream>
-#include <libmath/sum.hpp>
 
-int sum(int a, int b)
+int sum(int argc, char** argv)
 {
-    return a + b;
+    cxxopts::options options("test", "A brief description");
+
+  options.add_options()
+    ("f,first", "First value", cxxopts::value<int>())
+    ("s,second", "Second value", cxxopts::value<int>())
+    ("h,help", "Print usage");
+
+  auto result = options.parse(argc, argv);
+
+  std::cout << result["first"].as<int>() + result["second"].as<int>() << std::endl;
+
+    return 0;
 }

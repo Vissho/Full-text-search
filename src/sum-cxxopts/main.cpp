@@ -1,10 +1,8 @@
-// #include <cxxopts/cxxopts.hpp>
+#include <fts/sum.h>
 #include <iostream>
-#include <libmath/sum.hpp>
 
-
-int main()
+int main(int argc, char** argv)
 {
-    std::cout << sum(3, 5) << "\n";
+    sum(argc, argv);
     return 0;
 }
