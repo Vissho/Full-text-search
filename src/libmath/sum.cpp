@@ -28,12 +28,14 @@ int sum(int argc, char** argv)
                 "type --help.\n");
         return (-1);
     }
+
     if (result.count("second") == 0) {
         fmt::print(
                 "You have to enter the second value. For more details, "
                 "type --help.\n");
         return (-1);
     }
+
     fmt::print(
             "Your answer: {}\n",
             result["first"].as<double>() + result["second"].as<double>());

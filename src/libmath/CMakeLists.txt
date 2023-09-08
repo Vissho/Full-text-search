@@ -14,3 +14,29 @@ target_include_directories(
     ../../external/cxxopts/cxxopts/include
     ../../external/fmtlib/fmtlib/include/fmt
 )
+
+set(test_name sum.test)
+
+add_executable(${test_name})
+
+include(CompileOptions)
+set_compile_options(${test_name})
+
+target_sources(
+  ${test_name}
+  PRIVATE
+    sum.test.cpp
+)
+
+target_include_directories(
+  ${test_name}
+  PUBLIC
+    ../../external/googletest/googletest/googlemock/include
+    ../../external/googletest/googletest/googletest/include
+)
+
+target_link_libraries(
+  ${test_name}
+  PRIVATE
+    fts
+)
