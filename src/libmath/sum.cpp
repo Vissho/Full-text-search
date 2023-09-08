@@ -1,5 +1,5 @@
 #include <iostream>
-#include <libmath/sum.h>
+#include <libmath/sum.hpp>
 
 int sum(int a, int b)
 {

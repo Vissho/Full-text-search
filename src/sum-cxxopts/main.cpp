@@ -1,9 +1,10 @@
+// #include <cxxopts/cxxopts.hpp>
 #include <iostream>
-#include <libmath/sum.h>
-#include <cxxopts/cxxopts.hpp>
+#include <libmath/sum.hpp>
 
-int main(int argc, char** argv)
+
+int main()
 {
-    sum(argv[1], argv[2]);
+    std::cout << sum(3, 5) << "\n";
     return 0;
 }
