@@ -1,3 +1,0 @@
-[submodule "external/cxxopts/cxxopts"]
-	path = external/cxxopts/cxxopts
-	url = https://github.com/jarro2783/cxxopts.git
