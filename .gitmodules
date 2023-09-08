@@ -1,3 +1,6 @@
 [submodule "external/cxxopts/cxxopts"]
 	path = external/cxxopts/cxxopts
 	url = https://github.com/jarro2783/cxxopts.git
+[submodule "external/fmtlib/fmtlib"]
+	path = external/fmtlib/fmtlib
+	url = https://github.com/fmtlib/fmt.git
