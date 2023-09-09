@@ -4,23 +4,23 @@
 #include <core.h>
 #include <fts/sum.h>
 
-TEST(TestFtsSum, Subtest1)
+TEST(TestFtsSum, Subtest1) // NOLINT
 {
-    char** TEST1 = {"bin", "-f", "2"};
-    ASSERT_EQ(sum(3, TEST1), -1);
+    double res = sum(3, 4.4);
+    ASSERT_EQ(res, 7.4);
 }
 
-// TEST(TestFtsSum, Subtest2)
-// {
-//     char** TEST2 = {"bin", "-f", "2", "-s", "3.3"};
-//     ASSERT_EQ(sum(5, TEST2), 0);
-// }
+TEST(TestFtsSum, Subtest2) // NOLINT
+{
+    double res = sum(0, 0);
+    ASSERT_EQ(res, 0);
+}
 
-// TEST(TestFtsSum, Subtest3)
-// {
-//     char** TEST3 = {"bin", "-h"};
-//     ASSERT_EQ(sum(2, TEST3), 0);
-// }
+TEST(TestFtsSum, Subtest3) // NOLINT
+{
+    double res = sum(-3, -4.4);
+    ASSERT_EQ(res, -7.4);
+}
 
 int main(int argc, char** argv)
 {

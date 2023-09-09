@@ -13,6 +13,8 @@ target_include_directories(
     ../../include/
     ../../external/cxxopts/cxxopts/include
     ../../external/fmtlib/fmtlib/include/fmt
+    ../../external/googletest/googletest/googlemock/include
+    ../../external/googletest/googletest/googletest/include
 )
 
 set(test_name sum.test)

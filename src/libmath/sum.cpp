@@ -4,7 +4,7 @@
 #include <fts/sum.h>
 #include <iostream>
 
-int sum(int argc, char** argv)
+int init(int argc, char** argv)
 {
     cxxopts::options options(
             "Summation",
@@ -38,7 +38,12 @@ int sum(int argc, char** argv)
 
     fmt::print(
             "Your answer: {}\n",
-            result["first"].as<double>() + result["second"].as<double>());
+            sum(result["first"].as<double>(), result["second"].as<double>()));
 
     return 0;
+}
+
+double sum(double a, double b)
+{
+    return a + b;
 }

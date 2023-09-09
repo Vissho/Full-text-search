@@ -1,3 +1,4 @@
 #pragma once
 
-int sum(int argc, char** argv);
+int init(int argc, char** argv);
+double sum(double a, double b);

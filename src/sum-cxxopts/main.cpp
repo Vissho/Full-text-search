@@ -3,6 +3,6 @@
 
 int main(int argc, char** argv)
 {
-    sum(argc, argv);
+    init(argc, argv);
     return 0;
 }
