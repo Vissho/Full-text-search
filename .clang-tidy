@@ -1,6 +1,6 @@
 ---
-Checks:          
-  'clang-diagnostic-*,
+Checks: >       
+  clang-diagnostic-*,
   clang-analyzer-*,
   *,
   -altera-*,
@@ -12,16 +12,11 @@ Checks:
   -cppcoreguidelines-owning-memory,
   -google-runtime-references,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
-  -cppcoreguidelines-avoid-magic-numbers,
-  -readability-identifier-length,
-  -readability-magic-numbers'
+  -cppcoreguidelines-avoid-magic-number,
+  -readability-magic-numbers
 WarningsAsErrors: '.*'
 HeaderFilterRegex: '.*/(fts)/'
 AnalyzeTemporaryDtors: false
-FormatStyle:     file
+FormatStyle:     none
 User:            iv121s17
-CheckOptions:
-  - key:   cppcoreguidelines-explicit-virtual-functions.IgnoreDestructors
-    value: '1'
 ...
-

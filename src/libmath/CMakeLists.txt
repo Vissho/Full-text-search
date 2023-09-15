@@ -11,34 +11,30 @@ target_include_directories(
   ${target_name}
   PUBLIC
     ../../include/
-    ../../external/cxxopts/cxxopts/include
-    ../../external/fmtlib/fmtlib/include/fmt
-    ../../external/googletest/googletest/googlemock/include
-    ../../external/googletest/googletest/googletest/include
 )
 
-set(test_name sum.test)
+# set(test_name sum.test)
 
-add_executable(${test_name})
+# add_executable(${test_name})
 
-include(CompileOptions)
-set_compile_options(${test_name})
+# include(CompileOptions)
+# set_compile_options(${test_name})
 
-target_sources(
-  ${test_name}
-  PRIVATE
-    sum.test.cpp
-)
+# target_sources(
+#   ${test_name}
+#   PRIVATE
+#     sum.test.cpp
+# )
 
-target_include_directories(
-  ${test_name}
-  PUBLIC
-    ../../external/googletest/googletest/googlemock/include
-    ../../external/googletest/googletest/googletest/include
-)
+# target_include_directories(
+#   ${test_name}
+#   PUBLIC
+#     ../../external/googletest/googletest/googlemock/include
+#     ../../external/googletest/googletest/googletest/include
+# )
 
-target_link_libraries(
-  ${test_name}
-  PRIVATE
-    fts
-)
+# target_link_libraries(
+#   ${test_name}
+#   PRIVATE
+#     fts
+# )

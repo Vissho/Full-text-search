@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16.3)
+cmake_minimum_required(VERSION 3.22)
 
 project(
   Sum-cxxopts
@@ -18,6 +18,8 @@ else()
     OUTPUT_VARIABLE CLANG_TIDY_VERSION)
   message("clang-tidy found:\n" ${CLANG_TIDY_VERSION})
 endif()
+
+enable_testing()
 
 add_subdirectory(external)
 add_subdirectory(src)
