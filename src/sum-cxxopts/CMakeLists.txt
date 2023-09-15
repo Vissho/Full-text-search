@@ -15,6 +15,6 @@ target_link_libraries(
   ${target_name}
   PRIVATE
     fts
-    fmt
+    fmt::fmt
     cxxopts
 )

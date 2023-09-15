@@ -1,12 +1,11 @@
-#define FMT_HEADER_ONLY
-#include <core.h>
 #include <cxxopts.hpp>
+#include <fmt/core.h>
 #include <fts/sum.h>
 #include <iostream>
 
 int main(int argc, char** argv)
 {
-    cxxopts::options options(
+    cxxopts::Options options(
             "Summation",
             "A simple program for summing two floating point numbers");
 
@@ -36,9 +35,10 @@ int main(int argc, char** argv)
         return (-1);
     }
 
-    fmt::print(
-            "Your answer: {}\n",
-            sum(result["first"].as<double>(), result["second"].as<double>()));
+        fmt::print(
+                "Your answer: {}\n",
+                sum(result["first"].as<double>(),
+                result["second"].as<double>()));
 
     return 0;
 }
