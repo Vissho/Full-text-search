@@ -35,10 +35,9 @@ int main(int argc, char** argv)
         return (-1);
     }
 
-        fmt::print(
-                "Your answer: {}\n",
-                sum(result["first"].as<double>(),
-                result["second"].as<double>()));
+    fmt::print(
+            "Your answer: {}\n",
+            sum(result["first"].as<double>(), result["second"].as<double>()));
 
     return 0;
 }
