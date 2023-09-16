@@ -6,6 +6,7 @@ Checks: >
   -altera-*,
   -fuchsia-*,
   -llvmlibc-*,
+  -bugprone-exception-escape,
   -llvm-header-guard,
   -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
