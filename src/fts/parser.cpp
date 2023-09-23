@@ -1,4 +1,4 @@
-#include <fts/sum.h>
+#include <fts/parser.hpp>
 
 double sum(double first, double second)
 {

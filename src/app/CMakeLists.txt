@@ -1,4 +1,4 @@
-set(target_name sum-cxxopts)
+set(target_name main)
 
 add_executable(${target_name})
 

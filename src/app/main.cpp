@@ -1,6 +1,6 @@
 #include <cxxopts.hpp>
 #include <fmt/core.h>
-#include <fts/sum.h>
+#include <fts/parser.hpp>
 #include <iostream>
 
 int main(int argc, char** argv)
