@@ -1,11 +1,7 @@
 #include <cstring>
 #include <fts/parser.hpp>
 
-Ngrams NgramParser(
-        Words& text,
-        size_t ngram_min_length,
-        const Words& stop_words,
-        size_t ngram_max_length)
+Ngrams NgramParser(Words& text, json config)
 {
     Ngrams MainNgrams;
     for (auto& word : text) {
@@ -19,15 +15,15 @@ Ngrams NgramParser(
 
     for (const auto& word : text) {
         int flag = 0;
-        for (const auto& stop_word : stop_words) {
+        for (const auto& stop_word : config["stop_words"]) {
             if (word == stop_word) {
                 flag = 1;
             }
         }
-        if (flag == 0 && word.size() >= ngram_min_length) {
+        if (flag == 0 && word.size() >= config["ngram_min_length"]) {
             Words temp;
-            for (std::size_t i = ngram_min_length - 1;
-                 i < ngram_max_length && word[i] != '\0';
+            for (size_t i = static_cast<size_t>(config["ngram_min_length"]) - 1;
+                 i < config["ngram_max_length"] && word[i] != '\0';
                  ++i) {
                 std::string ngram = word;
                 ngram.erase(i + 1);

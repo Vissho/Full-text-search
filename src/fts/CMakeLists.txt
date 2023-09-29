@@ -13,6 +13,12 @@ target_include_directories(
   ../../include/
 )
 
+target_link_libraries(
+  ${target_name}
+  PRIVATE
+    nlohmann_json
+)
+
 set(test_name parser.test)
 
 include(GoogleTest)
@@ -39,6 +45,7 @@ target_link_libraries(
   PRIVATE
   GTest::gtest_main
   fts
+  nlohmann_json
 )
 
 gtest_discover_tests(${test_name})

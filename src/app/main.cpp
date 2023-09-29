@@ -1,27 +1,47 @@
 #include <cxxopts.hpp>
+#include <fstream>
 #include <fts/parser.hpp>
+#include <nlohmann/json.hpp>
 
 int main(int argc, char** argv)
 {
     cxxopts::Options options("Text");
-
     options.add_options()("text", "text", cxxopts::value<Words>());
-
     options.parse_positional({"text"});
 
     auto result = options.parse(argc, argv);
-    auto text = result["text"].as<Words>();
-    Words stop_words = {"and", "dr", "mr"};
-    const int ngram_min_length = 3;
-    const int ngram_max_length = 6;
+    Words text;
+    try {
+        text = result["text"].as<Words>();
+    } catch (const std::exception& e) {
+        std::cerr << "\x1B[31mText no found:\033[0m " << e.what() << '\n';
+        return EXIT_FAILURE;
+    }
+
     int index = 0;
+    std::ifstream filename("ConfigParser.json");
+
+    json config;
+    try {
+        config = json::parse(filename);
+    } catch (const std::exception& e) {
+        std::cerr << "\x1B[31mJson:\033[0m " << e.what() << '\n';
+        return EXIT_FAILURE;
+    }
 
     for (const auto& word : text) {
         std::cout << word << ' ';
     }
     std::cout << "\n";
 
-    Ngrams MainNgrams = NgramParser(text, ngram_min_length, stop_words, ngram_max_length);
+    Ngrams MainNgrams;
+    try {
+        MainNgrams = NgramParser(text, config);
+    } catch (const std::exception& e) {
+        std::cerr << "\x1B[31mNgramParser:\033[0m " << e.what() << '\n';
+        return EXIT_FAILURE;
+    }
+
     for (const auto& first : MainNgrams) {
         for (const auto& second : first) {
             std::cout << second << ' ' << index << ' ';
@@ -30,5 +50,5 @@ int main(int argc, char** argv)
     }
     std::cout << std::endl;
 
-    return 0;
+    return EXIT_SUCCESS;
 }

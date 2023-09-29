@@ -16,4 +16,5 @@ target_link_libraries(
   PRIVATE
     fts
     cxxopts
+    nlohmann_json
 )
