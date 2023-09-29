@@ -1,43 +1,34 @@
 #include <cxxopts.hpp>
-#include <fmt/core.h>
 #include <fts/parser.hpp>
-#include <iostream>
 
 int main(int argc, char** argv)
 {
-    cxxopts::Options options(
-            "Summation",
-            "A simple program for summing two floating point numbers");
+    cxxopts::Options options("Text");
 
-    options.add_options()("f,first", "First value", cxxopts::value<double>())(
-            "s,second", "Second value", cxxopts::value<double>())(
-            "h,help", "Print usage");
+    options.add_options()("text", "text", cxxopts::value<Words>());
+
+    options.parse_positional({"text"});
 
     auto result = options.parse(argc, argv);
+    auto text = result["text"].as<Words>();
+    Words stop_words = {"and", "dr", "mr"};
+    const int ngram_min_length = 3;
+    const int ngram_max_length = 6;
+    int index = 0;
 
-    if (result.count("help") != 0) {
-        fmt::print(options.help());
-        fmt::print("\n");
-        return (0);
+    for (const auto& word : text) {
+        std::cout << word << ' ';
     }
+    std::cout << "\n";
 
-    if (result.count("first") == 0) {
-        fmt::print(
-                "You have to enter the first value. For more details, "
-                "type --help.\n");
-        return (-1);
+    Ngrams MainNgrams = NgramParser(text, ngram_min_length, stop_words, ngram_max_length);
+    for (const auto& first : MainNgrams) {
+        for (const auto& second : first) {
+            std::cout << second << ' ' << index << ' ';
+        }
+        index++;
     }
-
-    if (result.count("second") == 0) {
-        fmt::print(
-                "You have to enter the second value. For more details, "
-                "type --help.\n");
-        return (-1);
-    }
-
-    fmt::print(
-            "Your answer: {}\n",
-            sum(result["first"].as<double>(), result["second"].as<double>()));
+    std::cout << std::endl;
 
     return 0;
 }
