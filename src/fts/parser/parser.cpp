@@ -6,8 +6,9 @@ Ngrams NgramParser(Words& text, json config)
     Ngrams MainNgrams;
     for (auto& word : text) {
         for (size_t i = 0; word[i] != '\0'; ++i) {
-            if (std::ispunct(word[i]) != 0) {
+            if (std::ispunct(word[i]) != 0 || std::isspace(word[i]) != 0) {
                 word.erase(i, 1);
+                --i;
             }
             word[i] = static_cast<char>(tolower(word[i]));
         }

@@ -1,7 +1,7 @@
 set(target_name fts)
 
 add_library(${target_name} SHARED
-  parser.cpp
+  parser/parser.cpp
   ../../include/fts/parser.hpp)
 
 include(CompileOptions)
@@ -31,7 +31,7 @@ set_compile_options(${test_name})
 target_sources(
   ${test_name}
   PRIVATE
-  parser.test.cpp
+  parser/parser.test.cpp
 )
 
 target_include_directories(
