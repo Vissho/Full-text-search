@@ -1,27 +1,32 @@
 #include <cstring>
 #include <fts/parser.hpp>
 
-Ngrams NgramParser(Words& text, json config)
+Ngrams NgramParser(Words& text, const json& config)
 {
     Ngrams MainNgrams;
     for (auto& word : text) {
-        for (size_t i = 0; word[i] != '\0'; ++i) {
-            if (std::ispunct(word[i]) != 0 || std::isspace(word[i]) != 0) {
-                word.erase(i, 1);
-                --i;
-            }
-            word[i] = static_cast<char>(tolower(word[i]));
-        }
+        word.erase(std::remove_if(word.begin(),
+                              word.end(),
+                              [](unsigned char letter) { return std::ispunct(letter); }),
+               word.end());
+        word.erase(std::remove_if(word.begin(),
+                              word.end(),
+                              [](unsigned char letter) { return std::isspace(letter); }),
+               word.end());
+	std::transform(word.begin(), word.end(), word.begin(),
+                   [](unsigned char letter){ return std::tolower(letter); });
     }
 
     for (const auto& word : text) {
-        int flag = 0;
-        for (const auto& stop_word : config["stop_words"]) {
-            if (word == stop_word) {
-                flag = 1;
-            }
-        }
-        if (flag == 0 && word.size() >= config["ngram_min_length"]) {
+	// word - провереям, является ли стоп-словом
+	// config["stop_words"]
+	const auto& stop_words = config["stop_words"];
+	auto it = std::find(stop_words.begin(), stop_words.end(), word);
+	if (it == stop_words.end()) { 
+		// не нашли стоп слово
+	}
+//[&config](unsigned char word){ for (const auto& stop_word : config["stop_words"]) {if (word == stop_word) {return word; }}}
+        if (std::find_if(word.begin(), word.end(), ) && word.size() >= config["ngram_min_length"]) {
             Words temp;
             for (size_t i = static_cast<size_t>(config["ngram_min_length"]) - 1;
                  i < config["ngram_max_length"] && word[i] != '\0';

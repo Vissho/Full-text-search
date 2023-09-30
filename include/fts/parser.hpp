@@ -9,4 +9,4 @@ using json = nlohmann::json;
 using Words = std::vector<std::string>;
 using Ngrams = std::vector<Words>;
 
-Ngrams NgramParser(Words& text, json config);
+Ngrams NgramParser(Words& text, const json& config);
