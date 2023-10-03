@@ -1,5 +1,6 @@
-#include <gtest/gtest.h>
 #include <fts/parser.hpp>
+
+#include <gtest/gtest.h>
 
 const json& getConfig()
 {
