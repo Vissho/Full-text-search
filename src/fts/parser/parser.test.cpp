@@ -1,13 +1,24 @@
 #include <gtest/gtest.h>
-#include <fstream>
 #include <fts/parser.hpp>
-#include <string>
+
+const json& getConfig()
+{
+    static const json config
+            = {{"stop_words",
+                {"a",     "an",   "and",  "are", "as",    "at",   "be",
+                 "but",   "by",   "for",  "if",  "in",    "into", "is",
+                 "it",    "no",   "not",  "of",  "on",    "or",   "s",
+                 "such",  "t",    "that", "the", "their", "then", "there",
+                 "these", "they", "this", "to",  "was",   "will", "with"}},
+               {"ngram_min_length", 3},
+               {"ngram_max_length", 6}};
+    return config;
+}
 
 TEST(TestParser, NormalText)
 {
     Words text = {"Dr.", "Jekyll", "and", "Mr.", "Hyde"};
-    std::ifstream filename("ConfigParser.json");
-    const json config = json::parse(filename);
+    const json& config = getConfig();
 
     Ngrams MainNgrams = NgramParser(text, config);
     ASSERT_STREQ(MainNgrams[0][0].c_str(), "jek");
@@ -21,8 +32,7 @@ TEST(TestParser, NormalText)
 TEST(TestParser, CheckPunctuationCharacter)
 {
     Words text = {" ", "!", ".", ",", ":", "s.s.s.s.s.s.s.s.s.s"};
-    std::ifstream filename("ConfigParser.json");
-    const json config = json::parse(filename);
+    const json& config = getConfig();
 
     Ngrams MainNgrams = NgramParser(text, config);
     ASSERT_STREQ(MainNgrams[0][0].c_str(), "sss");
@@ -34,8 +44,7 @@ TEST(TestParser, CheckPunctuationCharacter)
 TEST(TestParser, CheckCriticalSituation1)
 {
     Words text = {"......................................................"};
-    std::ifstream filename("ConfigParser.json");
-    const json config = json::parse(filename);
+    const json& config = getConfig();
 
     const Ngrams MainNgrams = NgramParser(text, config);
     if (MainNgrams.empty()) {
@@ -48,8 +57,7 @@ TEST(TestParser, CheckCriticalSituation1)
 TEST(TestParser, CheckCriticalSituation2)
 {
     Words text = {"                                                       "};
-    std::ifstream filename("ConfigParser.json");
-    const json config = json::parse(filename);
+    const json& config = getConfig();
 
     const Ngrams MainNgrams = NgramParser(text, config);
     if (MainNgrams.empty()) {

@@ -30,8 +30,8 @@ Ngrams NgramParser(Words& text, const json& config)
 
     for (const auto& word : text) {
         const auto& stop_words = config["stop_words"];
-        auto iterator = std::find(stop_words.begin(), stop_words.end(), word);
-        if (iterator == stop_words.end()
+        if (std::find(stop_words.begin(), stop_words.end(), word)
+                    == stop_words.end()
             && word.size() >= config["ngram_min_length"]) {
             Words Ngrams;
             for (size_t i = static_cast<size_t>(config["ngram_min_length"]) - 1;
