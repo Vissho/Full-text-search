@@ -1,6 +1,7 @@
 #include <cxxopts.hpp>
 #include <fstream>
 #include <fts/parser.hpp>
+#include <iostream>
 #include <nlohmann/json.hpp>
 
 int main(int argc, char** argv)

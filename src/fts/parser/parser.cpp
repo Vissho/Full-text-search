@@ -1,5 +1,5 @@
-#include <cstring>
 #include <fts/parser.hpp>
+#include <string>
 
 Ngrams NgramParser(Words& text, const json& config)
 {
