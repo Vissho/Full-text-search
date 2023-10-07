@@ -1,9 +1,9 @@
 [submodule "external/cxxopts/cxxopts"]
 	path = external/cxxopts/cxxopts
 	url = https://github.com/jarro2783/cxxopts.git
-[submodule "external/fmtlib/fmtlib"]
-	path = external/fmtlib/fmtlib
-	url = https://github.com/fmtlib/fmt.git
 [submodule "external/googletest/googletest"]
 	path = external/googletest/googletest
 	url = https://github.com/google/googletest.git
+[submodule "external/json/json"]
+	path = external/json/json
+	url = https://github.com/nlohmann/json.git

@@ -1,8 +1,8 @@
 set(target_name fts)
 
 add_library(${target_name} SHARED
-  sum.cpp
-  ../../include/fts/sum.h)
+  parser/parser.cpp
+  ../../include/fts/parser.hpp)
 
 include(CompileOptions)
 set_compile_options(${target_name})
@@ -13,7 +13,13 @@ target_include_directories(
   ../../include/
 )
 
-set(test_name sum.test)
+target_link_libraries(
+  ${target_name}
+  PRIVATE
+    nlohmann_json
+)
+
+set(test_name parser.test)
 
 include(GoogleTest)
 
@@ -25,7 +31,7 @@ set_compile_options(${test_name})
 target_sources(
   ${test_name}
   PRIVATE
-  sum.test.cpp
+  parser/parser.test.cpp
 )
 
 target_include_directories(
@@ -39,6 +45,7 @@ target_link_libraries(
   PRIVATE
   GTest::gtest_main
   fts
+  nlohmann_json
 )
 
 gtest_discover_tests(${test_name})

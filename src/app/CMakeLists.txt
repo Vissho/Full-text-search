@@ -1,4 +1,4 @@
-set(target_name sum-cxxopts)
+set(target_name main)
 
 add_executable(${target_name})
 
@@ -15,6 +15,6 @@ target_link_libraries(
   ${target_name}
   PRIVATE
     fts
-    fmt::fmt
     cxxopts
+    nlohmann_json
 )

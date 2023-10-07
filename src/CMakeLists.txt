@@ -1,2 +1,2 @@
-add_subdirectory(sum-cxxopts)
-add_subdirectory(libmath)
+add_subdirectory(app)
+add_subdirectory(fts)
