@@ -3,9 +3,13 @@
 #include <string>
 #include <vector>
 
-using json = nlohmann::json;
+namespace fts {
 
-using Words = std::vector<std::string>;
-using Ngrams = std::vector<Words>;
+    using Json = nlohmann::json;
 
-Ngrams NgramParser(Words& text, const json& config);
+    using Words = std::vector<std::string>;
+    using Ngrams = std::vector<Words>;
+
+    Ngrams ngram_parser(Words& text, const Json& config);
+
+} // namespace fts

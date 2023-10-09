@@ -7,13 +7,13 @@
 int main(int argc, char** argv)
 {
     cxxopts::Options options("Text");
-    options.add_options()("text", "text", cxxopts::value<Words>());
+    options.add_options()("text", "text", cxxopts::value<fts::Words>());
     options.parse_positional({"text"});
 
     auto result = options.parse(argc, argv);
-    Words text;
+    fts::Words text;
     try {
-        text = result["text"].as<Words>();
+        text = result["text"].as<fts::Words>();
     } catch (const std::exception& e) {
         std::cerr << "\x1B[31mText no found:\033[0m " << e.what() << '\n';
         return EXIT_FAILURE;
@@ -22,9 +22,9 @@ int main(int argc, char** argv)
     int index = 0;
     std::ifstream filename("ConfigParser.json");
 
-    json config;
+    fts::Json config;
     try {
-        config = json::parse(filename);
+        config = fts::Json::parse(filename);
     } catch (const std::exception& e) {
         std::cerr << "\x1B[31mJson:\033[0m " << e.what() << '\n';
         return EXIT_FAILURE;
@@ -35,9 +35,9 @@ int main(int argc, char** argv)
     }
     std::cout << "\n";
 
-    Ngrams MainNgrams;
+    fts::Ngrams MainNgrams;
     try {
-        MainNgrams = NgramParser(text, config);
+        MainNgrams = fts::ngram_parser(text, config);
     } catch (const std::exception& e) {
         std::cerr << "\x1B[31mNgramParser:\033[0m " << e.what() << '\n';
         return EXIT_FAILURE;

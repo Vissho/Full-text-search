@@ -8,7 +8,7 @@ using docs = std::map<size_t, std::string>;
 using posintext = std::map<size_t, std::vector<size_t>>;
 using entries = std::map<std::string, posintext>;
 
-namespace indexer {
+namespace fts {
 
     struct Index {
         docs Documents;
@@ -23,4 +23,4 @@ namespace indexer {
 
     // class TextIndexWriter {};
 
-} // namespace indexer
+} // namespace fts
