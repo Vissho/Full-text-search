@@ -16,9 +16,8 @@ namespace fts {
 
     void IndexBuilder::add_document(const size_t& document_id, Words& text)
     {
-        std::string str_text = vecstr_to_str(text);
-        index_.documents_[document_id] = str_text;
-        Ngrams main_ngrams = ngram_parser(text, config_);
+        index_.documents_[document_id] = vecstr_to_str(text);
+        const Ngrams main_ngrams = ngram_parser(text, config_);
 
         size_t position = 0;
         for (const auto& ngrams : main_ngrams) {
@@ -35,6 +34,11 @@ namespace fts {
             }
             position++;
         }
+    }
+
+    Index IndexBuilder::get_index()
+    {
+        return index_;
     }
 
     void IndexBuilder::print_index()
@@ -69,6 +73,40 @@ namespace fts {
             std::cout << "}\n";
         }
         std::cout << std::endl;
+    }
+
+    void IndexWriter::set_index(const Index& index)
+    {
+        index_ = index;
+    }
+
+    void IndexWriter::set_path(const std::string& path)
+    {
+        path_ = path;
+    }
+
+    void IndexWriter::write_text()
+    {
+        std::ofstream filename(path_);
+        if (!(filename.is_open())) {
+            throw std::domain_error("Invalid open file");
+        }
+
+        for (const auto& fpair : index_.entries_) {
+            filename << fpair.first << ' ' << fpair.second.end()->first << ' ';
+
+            for (const auto& spair : fpair.second) {
+                filename << spair.first << ' ' << spair.second.size() << ' ';
+                for (const auto& position : spair.second) {
+                    filename << position << ' ';
+                }
+
+                if (spair.first != (--fpair.second.end())->first) {
+                    filename << ' ';
+                }
+            }
+            filename << '\n';
+        }
     }
 
 } // namespace fts

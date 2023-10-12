@@ -69,3 +69,4 @@ _deps
 
 *.bin
 build/
+index.txt

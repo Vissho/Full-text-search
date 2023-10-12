@@ -40,11 +40,49 @@ namespace fts {
             }
         }
         void add_document(const size_t& document_id, Words& text);
+        Index get_index();
         void print_index();
     };
 
-    // class IndexWriter {};
+    class IndexWriter {
+    private:
+        Index index_;
+        std::string path_;
 
-    // class TextIndexWriter {};
+    public:
+        explicit IndexWriter(Index index) : index_(std::move(index))
+        {
+            if (index_.documents_.empty() || index_.entries_.empty()) {
+                throw std::domain_error("Invalid index");
+            }
+        }
+        explicit IndexWriter(std::string path) : path_(std::move(path))
+        {
+            if (path_.empty()) {
+                throw std::domain_error("Invalid path");
+            }
+        }
+        IndexWriter(Index index, std::string path)
+            : index_(std::move(index)), path_(std::move(path))
+        {
+            if (index_.documents_.empty() || index_.entries_.empty()) {
+                throw std::domain_error("Invalid index");
+            }
+            if (path_.empty()) {
+                throw std::domain_error("Invalid path");
+            }
+        }
+
+        void set_index(const Index& index);
+        void set_path(const std::string& path);
+
+        void write_text();
+        // void write_binary();
+    };
+
+    // class TextIndexWriter : public IndexWriter {
+    // public:
+    //     void write();
+    // };
 
 } // namespace fts
