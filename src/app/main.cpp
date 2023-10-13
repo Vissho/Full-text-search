@@ -31,8 +31,7 @@ int main(int argc, char** argv)
 
     builder.print_index();
 
-    std::string path = "index.txt";
-    fts::IndexWriter writer(builder.get_index(), path);
+    fts::IndexWriter writer(builder.get_index(), "index.txt");
     writer.write_text();
 
     return EXIT_SUCCESS;

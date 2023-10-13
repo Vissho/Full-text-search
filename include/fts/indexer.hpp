@@ -31,7 +31,7 @@ namespace fts {
                 config_ = Json::parse(filename);
             } catch (const std::exception& e) {
                 std::cerr << "\x1B[31mJson:\033[0m " << e.what() << '\n';
-                return;
+                abort();
             }
 
             if (config_["ngram_min_length"] > config_["ngram_max_length"]
@@ -39,6 +39,13 @@ namespace fts {
                 throw std::domain_error("Invalid range");
             }
         }
+        explicit IndexBuilder(Json config) : config_(std::move(config))
+        {
+            if (config_.empty() || config_.is_null()) {
+                throw std::domain_error("Invalid config");
+            }
+        }
+
         void add_document(const size_t& document_id, Words& text);
         Index get_index();
         void print_index();

@@ -7,8 +7,7 @@ namespace fts {
     {
         std::string str_text;
         for (const auto& word : text) {
-            str_text += word;
-            str_text += ' ';
+            str_text += word + ' ';
         }
         str_text[str_text.size() - 1] = '\0';
         return str_text;
@@ -23,11 +22,10 @@ namespace fts {
         for (const auto& ngrams : main_ngrams) {
             for (const auto& ngram : ngrams) {
                 Posintext posintext;
-                if (index_.entries_.find(ngram) != index_.entries_.end()) {
-                    posintext.insert(
-                            index_.entries_.at(ngram).begin(),
-                            index_.entries_.at(ngram).end());
-                    index_.entries_.erase(ngram);
+                auto iter = index_.entries_.find(ngram);
+                if (iter != index_.entries_.end()) {
+                    posintext.insert(iter->second.begin(), iter->second.end());
+                    index_.entries_.erase(iter);
                 }
                 posintext[document_id].push_back(position);
                 index_.entries_.insert({ngram, posintext});
@@ -44,29 +42,29 @@ namespace fts {
     void IndexBuilder::print_index()
     {
         std::cout << "\nid\ttext\n\n";
-        for (const auto& pair : index_.documents_) {
-            std::cout << pair.first << "\t" << pair.second << '\n';
+        for (const auto& document : index_.documents_) {
+            std::cout << document.first << "\t" << document.second << '\n';
         }
 
         std::cout << "\nterm\tentries\n";
-        for (const auto& fpair : index_.entries_) {
-            if (fpair.first.size() == config_["ngram_min_length"]) {
+        for (const auto& entry : index_.entries_) {
+            if (entry.first.size() == config_["ngram_min_length"]) {
                 std::cout << '\n';
             }
 
-            std::cout << fpair.first << ":\t{";
+            std::cout << entry.first << ":\t{";
 
-            for (const auto& spair : fpair.second) {
-                std::cout << spair.first << ": [";
-                for (const auto& position : spair.second) {
+            for (const auto& subentry : entry.second) {
+                std::cout << subentry.first << ": [";
+                for (const auto& position : subentry.second) {
                     std::cout << position;
-                    if (position != spair.second.back()) {
+                    if (position != subentry.second.back()) {
                         std::cout << ", ";
                     }
                 }
 
                 std::cout << "]";
-                if (spair.first != (--fpair.second.end())->first) {
+                if (subentry.first != (--entry.second.end())->first) {
                     std::cout << ", ";
                 }
             }
@@ -87,25 +85,28 @@ namespace fts {
 
     void IndexWriter::write_text()
     {
-        std::ofstream filename(path_);
-        if (!(filename.is_open())) {
+        std::ofstream file(path_);
+        if (!(file.is_open())) {
             throw std::domain_error("Invalid open file");
         }
 
-        for (const auto& fpair : index_.entries_) {
-            filename << fpair.first << ' ' << fpair.second.end()->first << ' ';
+        for (const auto& entry : index_.entries_) {
+            file << entry.first << ' ' << entry.second.end()->first << ' ';
 
-            for (const auto& spair : fpair.second) {
-                filename << spair.first << ' ' << spair.second.size() << ' ';
-                for (const auto& position : spair.second) {
-                    filename << position << ' ';
+            for (const auto& subentry : entry.second) {
+                file << subentry.first << ' ' << subentry.second.size() << ' ';
+                for (const auto& position : subentry.second) {
+                    file << position;
+                    if (position != subentry.second.back()) {
+                        file << ' ';
+                    }
                 }
 
-                if (spair.first != (--fpair.second.end())->first) {
-                    filename << ' ';
+                if (subentry.first != (--entry.second.end())->first) {
+                    file << ' ';
                 }
             }
-            filename << '\n';
+            file << '\n';
         }
     }
 
