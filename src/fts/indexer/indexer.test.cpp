@@ -19,11 +19,11 @@ const fts::Json& getConfig()
 TEST(TestIndexer, NormalText)
 {
     fts::IndexBuilder builder(getConfig());
-    fts::Words text1 = {"The", "Matrix", "matrix"};
+    const fts::Words text1 = {"The", "Matrix", "matrix"};
     const size_t document_id1 = 199903;
     builder.add_document(document_id1, text1);
 
-    fts::Words text2 = {"The", "Matrix", "Reloaded"};
+    const fts::Words text2 = {"The", "Matrix", "Reloaded"};
     const size_t document_id2 = 200305;
     builder.add_document(document_id2, text2);
 
@@ -48,7 +48,7 @@ TEST(TestIndexer, NormalText)
 TEST(TestIndexer, CheckCriticalSituation)
 {
     fts::IndexBuilder builder(getConfig());
-    fts::Words text1 = {"11:111", "11_11", "111111"};
+    const fts::Words text1 = {"11:111", "11_11", "111111"};
     const size_t document_id1 = 199903;
     builder.add_document(document_id1, text1);
 
@@ -72,32 +72,32 @@ TEST(TestIndexer, CheckThrowException1)
 {
     const fts::Json config;
 
-    EXPECT_THROW(fts::IndexBuilder builder(config), std::domain_error);
+    EXPECT_THROW(const fts::IndexBuilder builder(config), std::domain_error);
 }
 
 TEST(TestIndexer, CheckThrowException2)
 {
     const fts::Json config = {{"ngram_min_length", 8}, {"ngram_max_length", 6}};
 
-    EXPECT_THROW(fts::IndexBuilder builder(config), std::domain_error);
+    EXPECT_THROW(const fts::IndexBuilder builder(config), std::domain_error);
 }
 
 TEST(TestIndexer, CheckThrowException3)
 {
     fts::IndexBuilder builder(getConfig());
-    fts::Words text = {""};
+    const fts::Words text = {""};
     const size_t document_id = 199903;
     builder.add_document(document_id, text);
 
     EXPECT_THROW(
-            fts::IndexWriter writer(builder.get_index(), "test3.txt"),
+            const fts::IndexWriter writer(builder.get_index(), "test3.txt"),
             std::domain_error);
 }
 
 TEST(TestIndexer, CheckThrowException4)
 {
     fts::IndexBuilder builder(getConfig());
-    fts::Words text = {"The", "Matrix", "matrix"};
+    const fts::Words text = {"The", "Matrix", "matrix"};
     const size_t document_id = 199903;
     builder.add_document(document_id, text);
 

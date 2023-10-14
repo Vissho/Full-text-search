@@ -73,7 +73,7 @@ namespace fts {
         std::cout << std::endl;
     }
 
-    void IndexWriter::write_text()
+    void IndexWriter::write_text() const
     {
         std::ofstream file(path_);
         if (!(file.is_open())) {

@@ -71,7 +71,7 @@ namespace fts {
             }
         }
 
-        void write_text();
+        void write_text() const;
         // void write_binary();
     };
 

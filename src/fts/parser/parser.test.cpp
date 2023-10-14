@@ -18,7 +18,7 @@ const fts::Json& getConfig()
 
 TEST(TestParser, NormalText)
 {
-    fts::Words text = {"Dr.", "Jekyll", "and", "Mr.", "Hyde"};
+    const fts::Words text = {"Dr.", "Jekyll", "and", "Mr.", "Hyde"};
     const fts::Json& config = getConfig();
 
     const fts::Ngrams MainNgrams = fts::ngram_parser(text, config);
@@ -32,7 +32,7 @@ TEST(TestParser, NormalText)
 
 TEST(TestParser, CheckPunctuationCharacter)
 {
-    fts::Words text = {" ", "!", ".", ",", ":", "s.s.s.s.s.s.s.s.s.s"};
+    const fts::Words text = {" ", "!", ".", ",", ":", "s.s.s.s.s.s.s.s.s.s"};
     const fts::Json& config = getConfig();
 
     const fts::Ngrams MainNgrams = fts::ngram_parser(text, config);
@@ -44,7 +44,7 @@ TEST(TestParser, CheckPunctuationCharacter)
 
 TEST(TestParser, CheckCriticalSituation1)
 {
-    fts::Words text
+    const fts::Words text
             = {"......................................................"};
     const fts::Json& config = getConfig();
 
@@ -54,7 +54,7 @@ TEST(TestParser, CheckCriticalSituation1)
 
 TEST(TestParser, CheckCriticalSituation2)
 {
-    fts::Words text
+    const fts::Words text
             = {"                                                       "};
     const fts::Json& config = getConfig();
 
