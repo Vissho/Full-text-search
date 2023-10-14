@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 
     builder.print_index();
 
-    fts::IndexWriter writer(builder.get_index(), "index.txt");
+    const fts::IndexWriter writer(builder.get_index(), "index.txt");
     writer.write_text();
 
     return EXIT_SUCCESS;

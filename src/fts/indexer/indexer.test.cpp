@@ -27,7 +27,7 @@ TEST(TestIndexer, NormalText)
     const size_t document_id2 = 200305;
     builder.add_document(document_id2, text2);
 
-    fts::IndexWriter writer(builder.get_index(), "test1.txt");
+    const fts::IndexWriter writer(builder.get_index(), "test1.txt");
     writer.write_text();
 
     std::string line;
