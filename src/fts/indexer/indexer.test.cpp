@@ -52,7 +52,7 @@ TEST(TestIndexer, CheckCriticalSituation)
     const size_t document_id1 = 199903;
     builder.add_document(document_id1, text1);
 
-    fts::IndexWriter writer(builder.get_index(), "test2.txt");
+    const fts::IndexWriter writer(builder.get_index(), "test2.txt");
     writer.write_text();
 
     std::string line;
@@ -102,6 +102,6 @@ TEST(TestIndexer, CheckThrowException4)
     builder.add_document(document_id, text);
 
     EXPECT_THROW(
-            fts::IndexWriter writer(builder.get_index(), ""),
+            const fts::IndexWriter writer(builder.get_index(), ""),
             std::domain_error);
 }
