@@ -67,3 +67,41 @@ TEST(TestIndexer, CheckCriticalSituation)
     ASSERT_STREQ(lines[2].c_str(), "11111 1 199903 2 0 2");
     ASSERT_STREQ(lines[3].c_str(), "111111 1 199903 1 2");
 }
+
+TEST(TestIndexer, CheckThrowException1)
+{
+    const fts::Json config;
+
+    EXPECT_THROW(fts::IndexBuilder builder(config), std::domain_error);
+}
+
+TEST(TestIndexer, CheckThrowException2)
+{
+    const fts::Json config = {{"ngram_min_length", 8}, {"ngram_max_length", 6}};
+
+    EXPECT_THROW(fts::IndexBuilder builder(config), std::domain_error);
+}
+
+TEST(TestIndexer, CheckThrowException3)
+{
+    fts::IndexBuilder builder(getConfig());
+    fts::Words text = {""};
+    const size_t document_id = 199903;
+    builder.add_document(document_id, text);
+
+    EXPECT_THROW(
+            fts::IndexWriter writer(builder.get_index(), "test3.txt"),
+            std::domain_error);
+}
+
+TEST(TestIndexer, CheckThrowException4)
+{
+    fts::IndexBuilder builder(getConfig());
+    fts::Words text = {"The", "Matrix", "matrix"};
+    const size_t document_id = 199903;
+    builder.add_document(document_id, text);
+
+    EXPECT_THROW(
+            fts::IndexWriter writer(builder.get_index(), ""),
+            std::domain_error);
+}

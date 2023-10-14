@@ -12,6 +12,6 @@ namespace fts {
     using Words = std::vector<std::string>;
     using Ngrams = std::vector<Words>;
 
-    Ngrams ngram_parser(Words& text, const Json& config);
+    Ngrams ngram_parser(Words text, const Json& config);
 
 } // namespace fts

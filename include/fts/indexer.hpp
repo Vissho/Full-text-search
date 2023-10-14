@@ -30,25 +30,28 @@ namespace fts {
             try {
                 config_ = Json::parse(filename);
             } catch (const std::exception& e) {
-                std::cerr << "\x1B[31mJson:\033[0m " << e.what() << '\n';
-                abort();
+                throw std::domain_error("\x1B[31mInvalid config parser\033[0m");
             }
 
             if (config_["ngram_min_length"] > config_["ngram_max_length"]
                 || config_["ngram_min_length"] < 1) {
-                throw std::domain_error("Invalid range");
+                throw std::domain_error("\x1B[31mInvalid range\033[0m");
             }
         }
         explicit IndexBuilder(Json config) : config_(std::move(config))
         {
             if (config_.empty() || config_.is_null()) {
-                throw std::domain_error("Invalid config");
+                throw std::domain_error("\x1B[31mInvalid config\033[0m");
+            }
+            if (config_["ngram_min_length"] > config_["ngram_max_length"]
+                || config_["ngram_min_length"] < 1) {
+                throw std::domain_error("\x1B[31mInvalid range\033[0m");
             }
         }
 
-        void add_document(const size_t& document_id, Words& text);
-        Index get_index();
-        void print_index();
+        void add_document(size_t document_id, const Words& text);
+        Index get_index() const;
+        void print_index() const;
     };
 
     class IndexWriter {
@@ -57,31 +60,16 @@ namespace fts {
         std::string path_;
 
     public:
-        explicit IndexWriter(Index index) : index_(std::move(index))
-        {
-            if (index_.documents_.empty() || index_.entries_.empty()) {
-                throw std::domain_error("Invalid index");
-            }
-        }
-        explicit IndexWriter(std::string path) : path_(std::move(path))
-        {
-            if (path_.empty()) {
-                throw std::domain_error("Invalid path");
-            }
-        }
         IndexWriter(Index index, std::string path)
             : index_(std::move(index)), path_(std::move(path))
         {
             if (index_.documents_.empty() || index_.entries_.empty()) {
-                throw std::domain_error("Invalid index");
+                throw std::domain_error("\x1B[31mInvalid index\033[0m");
             }
             if (path_.empty()) {
-                throw std::domain_error("Invalid path");
+                throw std::domain_error("\x1B[31mInvalid path\033[0m");
             }
         }
-
-        void set_index(const Index& index);
-        void set_path(const std::string& path);
 
         void write_text();
         // void write_binary();

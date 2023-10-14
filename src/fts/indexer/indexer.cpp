@@ -13,7 +13,7 @@ namespace fts {
         return str_text;
     }
 
-    void IndexBuilder::add_document(const size_t& document_id, Words& text)
+    void IndexBuilder::add_document(size_t document_id, const Words& text)
     {
         index_.documents_[document_id] = vecstr_to_str(text);
         const Ngrams main_ngrams = ngram_parser(text, config_);
@@ -34,12 +34,12 @@ namespace fts {
         }
     }
 
-    Index IndexBuilder::get_index()
+    Index IndexBuilder::get_index() const
     {
         return index_;
     }
 
-    void IndexBuilder::print_index()
+    void IndexBuilder::print_index() const
     {
         std::cout << "\nid\ttext\n\n";
         for (const auto& document : index_.documents_) {
@@ -71,16 +71,6 @@ namespace fts {
             std::cout << "}\n";
         }
         std::cout << std::endl;
-    }
-
-    void IndexWriter::set_index(const Index& index)
-    {
-        index_ = index;
-    }
-
-    void IndexWriter::set_path(const std::string& path)
-    {
-        path_ = path;
     }
 
     void IndexWriter::write_text()

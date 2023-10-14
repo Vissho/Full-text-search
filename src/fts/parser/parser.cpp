@@ -54,7 +54,7 @@ namespace fts {
                         }),
                 words.end());
     }
-    Ngrams ngram_parser(Words& text, const Json& config)
+    Ngrams ngram_parser(Words text, const Json& config)
     {
         Ngrams all_ngrams;
         for (auto& word : text) {
