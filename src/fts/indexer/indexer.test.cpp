@@ -72,14 +72,15 @@ TEST(TestIndexer, CheckThrowException1)
 {
     const fts::Json config;
 
-    EXPECT_THROW(const fts::IndexBuilder builder(config), std::domain_error);
+    EXPECT_THROW(
+            const fts::IndexBuilder builder(config), std::invalid_argument);
 }
 
 TEST(TestIndexer, CheckThrowException2)
 {
     const fts::Json config = {{"ngram_min_length", 8}, {"ngram_max_length", 6}};
 
-    EXPECT_THROW(const fts::IndexBuilder builder(config), std::domain_error);
+    EXPECT_THROW(const fts::IndexBuilder builder(config), std::range_error);
 }
 
 TEST(TestIndexer, CheckThrowException3)
@@ -91,7 +92,7 @@ TEST(TestIndexer, CheckThrowException3)
 
     EXPECT_THROW(
             const fts::IndexWriter writer(builder.get_index(), "test3.txt"),
-            std::domain_error);
+            std::invalid_argument);
 }
 
 TEST(TestIndexer, CheckThrowException4)
@@ -103,5 +104,5 @@ TEST(TestIndexer, CheckThrowException4)
 
     EXPECT_THROW(
             const fts::IndexWriter writer(builder.get_index(), ""),
-            std::domain_error);
+            std::invalid_argument);
 }

@@ -5,11 +5,10 @@ namespace fts {
 
     std::string vecstr_to_str(const Words& text)
     {
-        std::string str_text;
-        for (const auto& word : text) {
-            str_text += word + ' ';
+        std::string str_text = text[0];
+        for (size_t i = 1; i < text.size(); ++i) {
+            str_text += ' ' + text[i];
         }
-        str_text[str_text.size() - 1] = '\0';
         return str_text;
     }
 

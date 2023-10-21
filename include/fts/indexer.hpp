@@ -27,25 +27,22 @@ namespace fts {
         IndexBuilder()
         {
             std::ifstream filename("ConfigParser.json");
-            try {
-                config_ = Json::parse(filename);
-            } catch (const std::exception& e) {
-                throw std::domain_error("\x1B[31mInvalid config parser\033[0m");
-            }
+
+            config_ = Json::parse(filename);
 
             if (config_["ngram_min_length"] > config_["ngram_max_length"]
                 || config_["ngram_min_length"] < 1) {
-                throw std::domain_error("\x1B[31mInvalid range\033[0m");
+                throw std::range_error("\x1B[31mInvalid range\033[0m");
             }
         }
         explicit IndexBuilder(Json config) : config_(std::move(config))
         {
             if (config_.empty() || config_.is_null()) {
-                throw std::domain_error("\x1B[31mInvalid config\033[0m");
+                throw std::invalid_argument("\x1B[31mInvalid config\033[0m");
             }
             if (config_["ngram_min_length"] > config_["ngram_max_length"]
                 || config_["ngram_min_length"] < 1) {
-                throw std::domain_error("\x1B[31mInvalid range\033[0m");
+                throw std::range_error("\x1B[31mInvalid range\033[0m");
             }
         }
 
@@ -64,10 +61,10 @@ namespace fts {
             : index_(std::move(index)), path_(std::move(path))
         {
             if (index_.documents_.empty() || index_.entries_.empty()) {
-                throw std::domain_error("\x1B[31mInvalid index\033[0m");
+                throw std::invalid_argument("\x1B[31mInvalid index\033[0m");
             }
             if (path_.empty()) {
-                throw std::domain_error("\x1B[31mInvalid path\033[0m");
+                throw std::invalid_argument("\x1B[31mInvalid path\033[0m");
             }
         }
 
