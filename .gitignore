@@ -69,3 +69,5 @@ _deps
 
 *.bin
 build/
+index.txt
+test*.txt

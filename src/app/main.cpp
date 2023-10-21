@@ -1,54 +1,43 @@
-#include <cxxopts.hpp>
-#include <fstream>
+#include <fts/indexer.hpp>
 #include <fts/parser.hpp>
+
+#include <cxxopts.hpp>
 #include <nlohmann/json.hpp>
+
+#include <fstream>
+#include <iostream>
 
 int main(int argc, char** argv)
 {
     cxxopts::Options options("Text");
-    options.add_options()("text", "text", cxxopts::value<Words>());
-    options.parse_positional({"text"});
+    options.add_options()("text", "text", cxxopts::value<fts::Words>())(
+            "id", "id", cxxopts::value<size_t>());
+    options.parse_positional({"id", "text"});
 
-    auto result = options.parse(argc, argv);
-    Words text;
     try {
-        text = result["text"].as<Words>();
+        auto result = options.parse(argc, argv);
+        const fts::Words text = result["text"].as<fts::Words>();
+        const size_t document_id = result["id"].as<size_t>();
+
+        fts::IndexBuilder builder;
+        builder.add_document(document_id, text);
+
+        const fts::Words text1 = {"The", "Matrix", "Reloaded"};
+        const size_t document_id1 = 200305;
+        builder.add_document(document_id1, text1);
+
+        const fts::Words text2 = {"The", "Matrix", "Revolutions"};
+        const size_t document_id2 = 200311;
+        builder.add_document(document_id2, text2);
+
+        builder.print_index();
+
+        const fts::IndexWriter writer(builder.get_index(), "index.txt");
+        writer.write_text();
     } catch (const std::exception& e) {
-        std::cerr << "\x1B[31mText no found:\033[0m " << e.what() << '\n';
+        std::cerr << e.what() << '\n';
         return EXIT_FAILURE;
     }
-
-    int index = 0;
-    std::ifstream filename("ConfigParser.json");
-
-    json config;
-    try {
-        config = json::parse(filename);
-    } catch (const std::exception& e) {
-        std::cerr << "\x1B[31mJson:\033[0m " << e.what() << '\n';
-        return EXIT_FAILURE;
-    }
-
-    for (const auto& word : text) {
-        std::cout << word << ' ';
-    }
-    std::cout << "\n";
-
-    Ngrams MainNgrams;
-    try {
-        MainNgrams = NgramParser(text, config);
-    } catch (const std::exception& e) {
-        std::cerr << "\x1B[31mNgramParser:\033[0m " << e.what() << '\n';
-        return EXIT_FAILURE;
-    }
-
-    for (const auto& first : MainNgrams) {
-        for (const auto& second : first) {
-            std::cout << second << ' ' << index << ' ';
-        }
-        index++;
-    }
-    std::cout << std::endl;
 
     return EXIT_SUCCESS;
 }

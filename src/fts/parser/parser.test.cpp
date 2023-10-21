@@ -2,9 +2,9 @@
 
 #include <gtest/gtest.h>
 
-const json& getConfig()
+const fts::Json& getConfig()
 {
-    static const json config
+    static const fts::Json config
             = {{"stop_words",
                 {"a",     "an",   "and",  "are", "as",    "at",   "be",
                  "but",   "by",   "for",  "if",  "in",    "into", "is",
@@ -18,10 +18,10 @@ const json& getConfig()
 
 TEST(TestParser, NormalText)
 {
-    Words text = {"Dr.", "Jekyll", "and", "Mr.", "Hyde"};
-    const json& config = getConfig();
+    const fts::Words text = {"Dr.", "Jekyll", "and", "Mr.", "Hyde"};
+    const fts::Json& config = getConfig();
 
-    Ngrams MainNgrams = NgramParser(text, config);
+    const fts::Ngrams MainNgrams = fts::ngram_parser(text, config);
     ASSERT_STREQ(MainNgrams[0][0].c_str(), "jek");
     ASSERT_STREQ(MainNgrams[0][1].c_str(), "jeky");
     ASSERT_STREQ(MainNgrams[0][2].c_str(), "jekyl");
@@ -32,10 +32,10 @@ TEST(TestParser, NormalText)
 
 TEST(TestParser, CheckPunctuationCharacter)
 {
-    Words text = {" ", "!", ".", ",", ":", "s.s.s.s.s.s.s.s.s.s"};
-    const json& config = getConfig();
+    const fts::Words text = {" ", "!", ".", ",", ":", "s.s.s.s.s.s.s.s.s.s"};
+    const fts::Json& config = getConfig();
 
-    Ngrams MainNgrams = NgramParser(text, config);
+    const fts::Ngrams MainNgrams = fts::ngram_parser(text, config);
     ASSERT_STREQ(MainNgrams[0][0].c_str(), "sss");
     ASSERT_STREQ(MainNgrams[0][1].c_str(), "ssss");
     ASSERT_STREQ(MainNgrams[0][2].c_str(), "sssss");
@@ -44,26 +44,20 @@ TEST(TestParser, CheckPunctuationCharacter)
 
 TEST(TestParser, CheckCriticalSituation1)
 {
-    Words text = {"......................................................"};
-    const json& config = getConfig();
+    const fts::Words text
+            = {"......................................................"};
+    const fts::Json& config = getConfig();
 
-    const Ngrams MainNgrams = NgramParser(text, config);
-    if (MainNgrams.empty()) {
-        SUCCEED();
-    } else {
-        FAIL();
-    }
+    const fts::Ngrams MainNgrams = fts::ngram_parser(text, config);
+    ASSERT_TRUE(MainNgrams.empty());
 }
 
 TEST(TestParser, CheckCriticalSituation2)
 {
-    Words text = {"                                                       "};
-    const json& config = getConfig();
+    const fts::Words text
+            = {"                                                       "};
+    const fts::Json& config = getConfig();
 
-    const Ngrams MainNgrams = NgramParser(text, config);
-    if (MainNgrams.empty()) {
-        SUCCEED();
-    } else {
-        FAIL();
-    }
+    const fts::Ngrams MainNgrams = fts::ngram_parser(text, config);
+    ASSERT_TRUE(MainNgrams.empty());
 }
