@@ -9,6 +9,8 @@
 
 namespace fts {
 
+    namespace fs = std::filesystem;
+
     using Docs = std::map<size_t, std::string>;
     using Posintext = std::map<size_t, std::vector<size_t>>;
     using Entries = std::map<std::string, Posintext>;
@@ -46,7 +48,7 @@ namespace fts {
             }
         }
 
-        void add_document(size_t document_id, const Words& text);
+        void add_document(size_t document_id, const std::string& text);
         Index get_index() const;
         void print_index() const;
     };

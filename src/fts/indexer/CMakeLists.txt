@@ -25,6 +25,7 @@ target_link_libraries(
   GTest::gtest_main
   fts
   nlohmann_json
+  picosha2
 )
 
 gtest_discover_tests(${test_name})

@@ -19,6 +19,7 @@ target_link_libraries(
   ${target_name}
   PRIVATE
     nlohmann_json
+    picosha2
 )
 
 add_subdirectory(parser)
