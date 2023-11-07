@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iostream>
 #include <map>
-#include <vector>
 
 namespace fts {
 
@@ -18,7 +17,10 @@ namespace fts {
     struct Index {
         Docs documents_;
         Entries entries_;
+        size_t count_docs_ = 0;
     };
+
+    std::string term_to_hash(const std::string& term);
 
     class IndexBuilder {
     private:
@@ -26,17 +28,6 @@ namespace fts {
         Json config_;
 
     public:
-        IndexBuilder()
-        {
-            std::ifstream filename("ConfigParser.json");
-
-            config_ = Json::parse(filename);
-
-            if (config_["ngram_min_length"] > config_["ngram_max_length"]
-                || config_["ngram_min_length"] < 1) {
-                throw std::range_error("\x1B[31mInvalid range\033[0m");
-            }
-        }
         explicit IndexBuilder(Json config) : config_(std::move(config))
         {
             if (config_.empty() || config_.is_null()) {
@@ -56,10 +47,10 @@ namespace fts {
     class IndexWriter {
     private:
         Index index_;
-        std::string path_;
+        fs::path path_;
 
     public:
-        IndexWriter(Index index, std::string path)
+        IndexWriter(Index index, fs::path path)
             : index_(std::move(index)), path_(std::move(path))
         {
             if (index_.documents_.empty() || index_.entries_.empty()) {

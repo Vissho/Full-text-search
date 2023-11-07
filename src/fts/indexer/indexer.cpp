@@ -8,6 +8,7 @@ namespace fts {
     void IndexBuilder::add_document(size_t document_id, const std::string& text)
     {
         index_.documents_[document_id] = text;
+        index_.count_docs_++;
         const Ngrams main_ngrams = ngram_parser(text, config_);
 
         size_t position = 0;
@@ -65,6 +66,11 @@ namespace fts {
         std::cout << std::endl;
     }
 
+    std::string term_to_hash(const std::string& term)
+    {
+        return picosha2::hash256_hex_string(term).substr(0, 6);
+    }
+
     void create_directory(const std::string& path)
     {
         if (!fs::exists(path)) {
@@ -93,10 +99,9 @@ namespace fts {
     void write_entries(const fs::path& entries_path, const Entries& entries)
     {
         for (const auto& [term, pos_in_text] : entries) {
-            std::string term_to_hash
-                    = picosha2::hash256_hex_string(term).substr(0, 6);
+            std::string term_hash = term_to_hash(term);
 
-            std::ofstream file_ent(entries_path / term_to_hash);
+            std::ofstream file_ent(entries_path / term_hash);
 
             if (!file_ent.is_open()) {
                 throw std::invalid_argument(
@@ -115,20 +120,32 @@ namespace fts {
         }
     }
 
+    void write_count_docs(const fs::path& main_path, const size_t& count_docs)
+    {
+        std::ofstream file_count(main_path / "count_docs");
+
+        if (!file_count.is_open()) {
+            throw std::invalid_argument(
+                    "Invalid open file for count documents");
+        }
+
+        file_count << count_docs;
+    }
+
     void IndexWriter::write_text() const
     {
-        fs::path path = path_;
-        fs::path main_path = path / "index";
-        fs::path docs_path = main_path / "docs";
-        fs::path entries_path = main_path / "entries";
+        const fs::path main_path = path_ / "index";
+        const fs::path docs_path = main_path / "docs";
+        const fs::path entries_path = main_path / "entries";
 
-        create_directory(path);
+        create_directory(path_);
         create_directory(main_path);
         create_directory(docs_path);
         create_directory(entries_path);
 
         write_docs(docs_path, index_.documents_);
         write_entries(entries_path, index_.entries_);
+        write_count_docs(main_path, index_.count_docs_);
     }
 
 } // namespace fts
