@@ -9,21 +9,25 @@ namespace fts {
     {
         for (const auto& [document_id, positions] :
              term_infos.term_frequencies_) {
-            double idf_t = std::log(
+            const double idf_t = std::log(
                     total_documents / term_infos.document_frequency_);
-            double tf_idf_t_d = positions * idf_t;
+            const double tf_idf_t_d = positions * idf_t;
             score[document_id] += tf_idf_t_d;
         }
     }
 
-    void search(const std::string& query, const IndexAccessor& index)
+    Result search(const std::string& query, const IndexAccessor& index)
     {
+        if (query.empty()) {
+            throw std::invalid_argument("\x1B[31mInvalid query\033[0m");
+        }
+
         Score all_score;
-        Ngrams main_ngrams = ngram_parser(query, index.get_config());
+        const Ngrams main_ngrams = ngram_parser(query, index.get_config());
 
         for (const auto& ngram : main_ngrams) {
             for (const auto& term : ngram) {
-                TermInfos term_infos = index.get_term_infos(term);
+                const TermInfos term_infos = index.get_term_infos(term);
                 if (term_infos.term_frequencies_.empty()) {
                     continue;
                 }
@@ -40,6 +44,14 @@ namespace fts {
                     return score1.second > score2.second;
                 });
 
+        return result;
+    }
+
+    void print_result(
+            const std::string& query,
+            const IndexAccessor& index,
+            const Result& result)
+    {
         std::cout << "Query: " << query << "\n\nid\tscore\ttext\n\n";
         for (const auto& [document_id, score] : result) {
             std::cout << document_id << '\t' << score << '\t'
@@ -65,20 +77,18 @@ namespace fts {
         }
 
         std::string line;
-        if (!std::getline(file_term, line)) {
-            return term_infos;
-        }
+        while (std::getline(file_term, line)) {
+            Words words = str_to_vecstr(line);
+            term_infos.document_frequency_ = std::stoi(words[1]);
 
-        Words words = str_to_vecstr(line);
-        term_infos.document_frequency_ = std::stoi(words[1]);
-
-        size_t item = 2;
-        while (item < words.size()) {
-            size_t document_id = std::stoi(words[item]);
-            size_t positions = std::stoi(words[item + 1]);
-            term_infos.term_frequencies_[document_id]
-                    = static_cast<double>(positions);
-            item = item + 2 + positions;
+            size_t item = 2;
+            while (item < words.size()) {
+                const size_t document_id = std::stoi(words[item]);
+                const size_t positions = std::stoi(words[item + 1]);
+                term_infos.term_frequencies_[document_id]
+                        = static_cast<double>(positions);
+                item = item + 2 + positions;
+            }
         }
 
         return term_infos;

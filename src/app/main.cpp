@@ -44,7 +44,8 @@ int main(/*int argc, char** argv*/)
         writer.write_text();
 
         const fts::IndexAccessor index_acc("docs", config);
-        fts::search("The Matrix", index_acc);
+        const fts::Result result = fts::search("The Matrix", index_acc);
+        fts::print_result("The Matrix", index_acc, result);
     } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
         return EXIT_FAILURE;

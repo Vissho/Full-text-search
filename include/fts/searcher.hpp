@@ -42,6 +42,10 @@ namespace fts {
         Json get_config() const;
     };
 
-    void search(const std::string& query, const IndexAccessor& index);
+    Result search(const std::string& query, const IndexAccessor& index);
+    void print_result(
+            const std::string& query,
+            const IndexAccessor& index,
+            const Result& result);
 
 } // namespace fts

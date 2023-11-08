@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-const fts::Json& getConfig()
+const fts::Json& get_config()
 {
     static const fts::Json config
             = {{"stop_words",
@@ -18,7 +18,7 @@ const fts::Json& getConfig()
 
 TEST(TestIndexer, NormalText)
 {
-    fts::IndexBuilder builder(getConfig());
+    fts::IndexBuilder builder(get_config());
     const std::string text1 = "The Matrix matrix";
     const size_t document_id1 = 199903;
     builder.add_document(document_id1, text1);
@@ -49,7 +49,7 @@ TEST(TestIndexer, NormalText)
 
 TEST(TestIndexer, CheckCriticalSituation)
 {
-    fts::IndexBuilder builder(getConfig());
+    fts::IndexBuilder builder(get_config());
     const std::string text1 = "11:111 11_11 111111";
     const size_t document_id1 = 199903;
     builder.add_document(document_id1, text1);
@@ -82,7 +82,7 @@ TEST(TestIndexer, CheckThrowException2)
 
 TEST(TestIndexer, CheckThrowException3)
 {
-    fts::IndexBuilder builder(getConfig());
+    fts::IndexBuilder builder(get_config());
     const std::string text;
     const size_t document_id = 199903;
     builder.add_document(document_id, text);
@@ -94,7 +94,7 @@ TEST(TestIndexer, CheckThrowException3)
 
 TEST(TestIndexer, CheckThrowException4)
 {
-    fts::IndexBuilder builder(getConfig());
+    fts::IndexBuilder builder(get_config());
     const std::string text = "The Matrix matrix";
     const size_t document_id = 199903;
     builder.add_document(document_id, text);

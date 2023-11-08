@@ -92,16 +92,15 @@ namespace fts {
             }
 
             file_docs << text;
-            file_docs.close();
         }
     }
 
     void write_entries(const fs::path& entries_path, const Entries& entries)
     {
         for (const auto& [term, pos_in_text] : entries) {
-            std::string term_hash = term_to_hash(term);
+            const std::string term_hash = term_to_hash(term);
 
-            std::ofstream file_ent(entries_path / term_hash);
+            std::ofstream file_ent(entries_path / term_hash, std::ios::app);
 
             if (!file_ent.is_open()) {
                 throw std::invalid_argument(
@@ -115,8 +114,7 @@ namespace fts {
                     file_ent << ' ' << position;
                 }
             }
-
-            file_ent.close();
+            file_ent << '\n';
         }
     }
 
