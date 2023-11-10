@@ -11,7 +11,8 @@
 int main(/*int argc, char** argv*/)
 {
     try {
-        fts::Json config = fts::Json::parse(std::ifstream("ConfigParser.json"));
+        const fts::Json config
+                = fts::Json::parse(std::ifstream("ConfigParser.json"));
         fts::IndexBuilder builder(config);
 
         const std::string text = "The Matrix matrix MATRIX";

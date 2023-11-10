@@ -50,13 +50,13 @@ namespace fts {
         std::size_t end = text.find(' ');
 
         while (end != std::string::npos) {
-            std::string word = text.substr(start, end - start);
+            const std::string word = text.substr(start, end - start);
             words.push_back(word);
             start = end + 1;
             end = text.find(' ', start);
         }
 
-        std::string word = text.substr(start);
+        const std::string word = text.substr(start);
         if (!word.empty()) {
             words.push_back(word);
         }
