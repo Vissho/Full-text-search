@@ -4,7 +4,7 @@ namespace fts {
 
     void
     score(const TermInfos& term_infos,
-          const double& total_documents,
+          const double total_documents,
           Score& score)
     {
         for (const auto& [document_id, positions] :
@@ -41,6 +41,9 @@ namespace fts {
                 result.begin(),
                 result.end(),
                 [](const auto& score1, const auto& score2) {
+                    if (score1.second == score2.second) {
+                        return score1.first < score2.first;
+                    }
                     return score1.second > score2.second;
                 });
 
