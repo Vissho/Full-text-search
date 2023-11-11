@@ -1,4 +1,4 @@
-set(test_name indexer.test)
+set(test_name searcher.test)
 
 include(GoogleTest)
 
@@ -10,7 +10,7 @@ set_compile_options(${test_name})
 target_sources(
   ${test_name}
   PRIVATE
-  indexer.test.cpp
+  searcher.test.cpp
 )
 
 target_include_directories(
@@ -25,7 +25,6 @@ target_link_libraries(
   GTest::gtest_main
   fts
   nlohmann_json
-  picosha2
 )
 
 gtest_discover_tests(${test_name})

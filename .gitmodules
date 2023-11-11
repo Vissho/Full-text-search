@@ -7,3 +7,6 @@
 [submodule "external/json/json"]
 	path = external/json/json
 	url = https://github.com/nlohmann/json.git
+[submodule "external/picosha2/picosha2"]
+	path = external/picosha2/picosha2
+	url = https://github.com/okdshin/PicoSHA2.git

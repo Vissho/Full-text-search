@@ -14,18 +14,6 @@ namespace fts {
                 word.end());
     }
 
-    void remove_spaces(std::string& word)
-    {
-        word.erase(
-                std::remove_if(
-                        word.begin(),
-                        word.end(),
-                        [](unsigned char letter) {
-                            return std::isspace(letter);
-                        }),
-                word.end());
-    }
-
     void to_lower(std::string& word)
     {
         std::transform(
@@ -54,18 +42,39 @@ namespace fts {
                         }),
                 words.end());
     }
-    Ngrams ngram_parser(Words text, const Json& config)
+
+    Words str_to_vecstr(const std::string& text)
     {
-        Ngrams all_ngrams;
-        for (auto& word : text) {
-            remove_punctuation(word);
-            remove_spaces(word);
-            to_lower(word);
+        Words words;
+        std::size_t start = 0;
+        std::size_t end = text.find(' ');
+
+        while (end != std::string::npos) {
+            const std::string word = text.substr(start, end - start);
+            words.push_back(word);
+            start = end + 1;
+            end = text.find(' ', start);
         }
 
-        remove_stop_words(text, config);
+        const std::string word = text.substr(start);
+        if (!word.empty()) {
+            words.push_back(word);
+        }
+        return words;
+    }
 
-        for (const auto& word : text) {
+    Ngrams ngram_parser(std::string text, const Json& config)
+    {
+        Ngrams all_ngrams;
+
+        remove_punctuation(text);
+        to_lower(text);
+
+        Words words = str_to_vecstr(text);
+
+        remove_stop_words(words, config);
+
+        for (const auto& word : words) {
             Words ngrams;
             for (size_t i = static_cast<size_t>(config["ngram_min_length"]) - 1;
                  i < config["ngram_max_length"] && word[i] != '\0';
