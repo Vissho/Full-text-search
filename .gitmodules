@@ -10,3 +10,6 @@
 [submodule "external/picosha2/picosha2"]
 	path = external/picosha2/picosha2
 	url = https://github.com/okdshin/PicoSHA2.git
+[submodule "external/rapidcsv/rapidcsv"]
+	path = external/rapidcsv/rapidcsv
+	url = https://github.com/d99kris/rapidcsv.git
