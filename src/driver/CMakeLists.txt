@@ -39,4 +39,5 @@ target_link_libraries(
     fts
     cxxopts
     nlohmann_json
+    replxx
 )

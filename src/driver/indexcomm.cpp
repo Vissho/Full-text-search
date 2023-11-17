@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     std::vector<std::string> titles;
 
     try {
-        rapidcsv::Document doc(csv_name);
+        const rapidcsv::Document doc(csv_name);
         document_ids = doc.GetColumn<size_t>("bookID");
         titles = doc.GetColumn<std::string>("title");
     } catch (const std::exception& e) {
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
         for (size_t i = 0; i < document_ids.size(); i++) {
             builder.add_document(document_ids[i], titles[i]);
         }
-        fts::IndexWriter writer(builder.get_index(), index_name);
+        const fts::IndexWriter writer(builder.get_index(), index_name);
         writer.write_text();
 
     } catch (const std::exception& e) {
