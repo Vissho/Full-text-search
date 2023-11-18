@@ -47,6 +47,15 @@ namespace fts {
                     return score1.second > score2.second;
                 });
 
+        const double split_score = result[0].second / 2;
+        result.erase(
+                std::remove_if(
+                        result.begin(),
+                        result.end(),
+                        [split_score](const auto& score) {
+                            return score.second < split_score;
+                        }),
+                result.end());
         return result;
     }
 
