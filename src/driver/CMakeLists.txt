@@ -20,21 +20,21 @@ target_link_libraries(
     rapidcsv
 )
 
-set(target_name searchcomm)
+set(target_name1 searchcomm)
 
-add_executable(${target_name})
+add_executable(${target_name1})
 
 include(CompileOptions)
-set_compile_options(${target_name})
+set_compile_options(${target_name1})
 
 target_sources(
-  ${target_name}
+  ${target_name1}
   PRIVATE
     searchcomm.cpp
 )
 
 target_link_libraries(
-  ${target_name}
+  ${target_name1}
   PRIVATE
     fts
     cxxopts
